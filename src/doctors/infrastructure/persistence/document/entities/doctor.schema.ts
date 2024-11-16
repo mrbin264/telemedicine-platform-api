@@ -19,6 +19,11 @@ export class DoctorSchemaClass extends EntityDocumentHelper {
   userId: Types.ObjectId;
 
   @Prop({
+    type: String,
+  })
+  avatar: string;
+
+  @Prop({
     type: [String],
   })
   professionalDocuments: string[];

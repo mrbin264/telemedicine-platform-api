@@ -11,6 +11,14 @@ export class DoctorDto {
   userId: string;
 
   @ApiProperty({
+    description: 'The avatar of the doctor',
+    example: 'https://example.com/avatar.jpg',
+  })
+  @IsNotEmpty()
+  @IsString()
+  avatar: string;
+
+  @ApiProperty({
     description: 'The professional documents of the doctor',
     example: ['Medical License', 'Board Certification'],
   })
