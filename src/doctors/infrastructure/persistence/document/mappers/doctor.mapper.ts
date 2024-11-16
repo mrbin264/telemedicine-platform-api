@@ -50,8 +50,7 @@ export class DoctorMapper {
       : [];
     persistenceSchema.location =
       domainEntity.location &&
-      domainEntity.location?.city &&
-      domainEntity.location?.postalCode
+      (domainEntity.location?.city || domainEntity.location?.postalCode)
         ? {
             city: domainEntity.location.city,
             postalCode: domainEntity.location.postalCode,

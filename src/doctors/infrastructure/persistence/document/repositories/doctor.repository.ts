@@ -3,7 +3,6 @@ import { NullableType } from '../../../../../utils/types/nullable.type';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { DoctorSchemaClass } from '../entities/doctor.schema';
-// import { UserSchemaClass } from '../../../../../users/infrastructure/persistence/document/entities/user.schema';
 import { DoctorRepository } from '../../doctor.repository';
 import { Doctor } from '../../../../domain/doctor';
 import { DoctorMapper } from '../mappers/doctor.mapper';

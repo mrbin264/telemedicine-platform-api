@@ -19,32 +19,28 @@ export class DoctorSchemaClass extends EntityDocumentHelper {
   userId: Types.ObjectId;
 
   @Prop({
-    required: true,
     type: [String],
   })
   professionalDocuments: string[];
 
   @Prop({
-    required: true,
     type: Boolean,
   })
   approved: boolean;
 
   @Prop({
-    required: true,
     type: [String],
   })
   specialties: string[];
 
   @Prop({
-    required: true,
     type: [
       {
         dayOfWeek: String,
         timeSlots: [
           {
-            start_time: String,
-            end_time: String,
+            startTime: String,
+            endTime: String,
           },
         ],
       },
@@ -56,7 +52,6 @@ export class DoctorSchemaClass extends EntityDocumentHelper {
   }[];
 
   @Prop({
-    required: true,
     type: {
       city: String,
       state: String,
