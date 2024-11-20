@@ -15,6 +15,11 @@ export class Doctor {
   userId: string;
 
   @ApiProperty({
+    type: String,
+  })
+  avatar: string;
+
+  @ApiProperty({
     type: [String],
   })
   professionalDocuments: string[];

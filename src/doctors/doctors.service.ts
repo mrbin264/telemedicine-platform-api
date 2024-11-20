@@ -17,9 +17,8 @@ export class DoctorsService {
   ) {}
 
   async create(createDoctorDto: CreateDoctorDto) {
-    const existingDoctor = await this.doctorRepository.findById(
-      createDoctorDto.userId,
-    );
+    const existingDoctor =
+      (await this.doctorRepository.findById(createDoctorDto.userId)) ?? null;
     if (existingDoctor) {
       throw new UnprocessableEntityException({
         status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -52,10 +51,12 @@ export class DoctorsService {
     paginationOptions,
     search,
     filters,
+    sortOptions,
   }: {
     paginationOptions: IPaginationOptions;
     search?: string;
     filters?: Record<string, any>;
+    sortOptions?: Record<string, any>;
   }) {
     return this.doctorRepository.findAllWithPaginationAndFilters({
       paginationOptions: {
@@ -64,6 +65,7 @@ export class DoctorsService {
       },
       search,
       filters,
+      sortOptions,
     });
   }
 

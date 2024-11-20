@@ -27,6 +27,7 @@ import {
 } from '../utils/dto/infinity-pagination-response.dto';
 import { infinityPagination } from '../utils/infinity-pagination';
 import { FindAllDoctorsDto } from './dto/find-all-doctors.dto';
+import { Filters, SortOptions } from './interfaces/doctor-filters.interface';
 
 @ApiTags('Doctors')
 @ApiBearerAuth()
@@ -51,16 +52,28 @@ export class DoctorsController {
     type: InfinityPaginationResponse(Doctor),
   })
   async findAll(
-    @Query() query: FindAllDoctorsDto,
+    @Query()
+    query: FindAllDoctorsDto = {
+      limit: 10,
+      page: 1,
+      sortBy: '',
+      sortOrder: '',
+      search: '',
+      specialties: '',
+      city: '',
+    },
   ): Promise<InfinityPaginationResponseDto<Doctor>> {
-    const page = query?.page ?? 1;
-    let limit = query?.limit ?? 10;
+    const page = query.page ?? 1;
+    let limit = query.limit;
     if (limit > 50) {
       limit = 50;
     }
 
     const search = query?.search ?? '';
-    const filters: any = {};
+
+    const filters: Filters = {};
+    const sortOptions: SortOptions = {};
+
     if (query.specialties) {
       filters.specialties = query.specialties;
     }
@@ -69,7 +82,15 @@ export class DoctorsController {
       filters.city = query.city;
     }
 
-    return infinityPagination(
+    if (query.sortBy) {
+      sortOptions.sortBy = query.sortBy;
+    }
+
+    if (query.sortOrder) {
+      sortOptions.sortOrder = query.sortOrder;
+    }
+
+    const paginationResult =
       await this.doctorsService.findAllWithPaginationAndFilters({
         paginationOptions: {
           page,
@@ -77,9 +98,10 @@ export class DoctorsController {
         },
         search,
         filters,
-      }),
-      { page, limit },
-    );
+        sortOptions,
+      });
+
+    return infinityPagination(paginationResult, { page, limit });
   }
 
   @Get(':id')

@@ -22,6 +22,21 @@ export class FindAllDoctorsDto {
   limit: number;
 
   @ApiPropertyOptional({
+    description: 'Sort doctors by a field',
+    example: 'name',
+  })
+  @IsOptional()
+  sortBy: string;
+
+  @ApiPropertyOptional({
+    description: 'Sort doctors in ascending or descending order',
+    example: 'asc',
+    enum: ['asc', 'desc'],
+  })
+  @IsOptional()
+  sortOrder: string;
+
+  @ApiPropertyOptional({
     description: 'Search term to filter doctors by name or specialty',
     example: 'Tuan',
   })

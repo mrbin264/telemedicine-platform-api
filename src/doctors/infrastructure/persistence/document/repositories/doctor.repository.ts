@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { NullableType } from '../../../../../utils/types/nullable.type';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, PipelineStage } from 'mongoose';
 import { DoctorSchemaClass } from '../entities/doctor.schema';
-// import { UserSchemaClass } from '../../../../../users/infrastructure/persistence/document/entities/user.schema';
 import { DoctorRepository } from '../../doctor.repository';
 import { Doctor } from '../../../../domain/doctor';
 import { DoctorMapper } from '../mappers/doctor.mapper';
@@ -45,10 +44,12 @@ export class DoctorDocumentRepository implements DoctorRepository {
     paginationOptions,
     search,
     filters,
+    sortOptions,
   }: {
     paginationOptions: IPaginationOptions;
     search?: string;
     filters?: { specialties?: string; city?: string };
+    sortOptions?: { sortBy?: string; sortOrder?: string };
   }): Promise<Doctor[]> {
     const matchStage: any = {};
     if (filters?.specialties) {
@@ -66,7 +67,7 @@ export class DoctorDocumentRepository implements DoctorRepository {
       ];
     }
 
-    const pipeline = [
+    const pipeline: PipelineStage[] = [
       {
         $lookup: {
           from: 'userschemaclasses',
@@ -81,6 +82,18 @@ export class DoctorDocumentRepository implements DoctorRepository {
       { $skip: (paginationOptions.page - 1) * paginationOptions.limit },
       { $limit: paginationOptions.limit },
     ];
+
+    if (sortOptions?.sortBy) {
+      const sortStage: any = {};
+      if (['firstName', 'lastName', 'email'].includes(sortOptions.sortBy)) {
+        sortStage[`userInfo.${sortOptions.sortBy}`] =
+          sortOptions.sortOrder === 'desc' ? -1 : 1;
+      } else {
+        sortStage[sortOptions.sortBy] =
+          sortOptions.sortOrder === 'desc' ? -1 : 1;
+      }
+      pipeline.push({ $sort: sortStage });
+    }
 
     const entityObjects = await this.doctorModel.aggregate(pipeline);
 
