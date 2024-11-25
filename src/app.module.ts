@@ -6,6 +6,7 @@ import { MailerModule } from './mailer/mailer.module';
 import { SessionModule } from './session/session.module';
 import { UsersModule } from './users/users.module';
 import { DoctorsModule } from './doctors/doctors.module';
+import { PatientsModule } from './patients/patients.module';
 import appConfig from './config/app.config';
 import databaseConfig from './database/config/database.config';
 import authConfig from './auth/config/auth.config';
@@ -15,6 +16,7 @@ import { MongooseConfigService } from './database/mongoose-config.service';
 
 @Module({
   imports: [
+    PatientsModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [appConfig, authConfig, databaseConfig, mailConfig],

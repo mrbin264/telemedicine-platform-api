@@ -18,10 +18,12 @@ export abstract class DoctorRepository {
     paginationOptions,
     search,
     filters,
+    sortOptions,
   }: {
     paginationOptions: IPaginationOptions;
     search?: string;
     filters?: Record<string, any>;
+    sortOptions?: Record<string, any>;
   }): Promise<Doctor[]>;
 
   abstract findById(id: Doctor['id']): Promise<NullableType<Doctor>>;

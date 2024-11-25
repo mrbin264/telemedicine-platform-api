@@ -22,6 +22,15 @@ export class CreateDoctorDto {
   userId: string;
 
   @ApiProperty({
+    description: "URL of the doctor's avatar",
+    example: 'https://example.com/avatar.jpg',
+    type: String,
+  })
+  @IsOptional()
+  @IsString()
+  avatar: string;
+
+  @ApiProperty({
     description: 'List of professional documents',
     example: ['document1.pdf', 'document2.pdf'],
     type: [String],

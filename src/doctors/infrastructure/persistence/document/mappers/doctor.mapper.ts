@@ -7,6 +7,7 @@ export class DoctorMapper {
     const domainEntity = new Doctor();
     domainEntity.id = raw._id.toString();
     domainEntity.userId = raw.userId.toString();
+    domainEntity.avatar = raw.avatar;
 
     domainEntity.professionalDocuments = raw.professionalDocuments;
     domainEntity.approved = raw.approved;
@@ -35,6 +36,7 @@ export class DoctorMapper {
       persistenceSchema._id = domainEntity.id;
     }
     persistenceSchema.userId = new Types.ObjectId(domainEntity.userId);
+    persistenceSchema.avatar = domainEntity.avatar;
     persistenceSchema.professionalDocuments =
       domainEntity.professionalDocuments;
     persistenceSchema.approved = domainEntity.approved;
@@ -50,8 +52,7 @@ export class DoctorMapper {
       : [];
     persistenceSchema.location =
       domainEntity.location &&
-      domainEntity.location?.city &&
-      domainEntity.location?.postalCode
+      (domainEntity.location?.city || domainEntity.location?.postalCode)
         ? {
             city: domainEntity.location.city,
             postalCode: domainEntity.location.postalCode,
